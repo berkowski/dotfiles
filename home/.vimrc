@@ -1,3 +1,4 @@
+set shell=/bin/bash
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -28,10 +29,10 @@ Plugin 'gmarik/Vundle.vim'
 " Avoid a name conflict with L9
 " Plugin 'user/L9', {'name': 'newL9'}
 
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 " Powerline setup
-set guifont=Inconsolata\ for\ Powerline.otf\ 12
-set laststatus=2
+" set guifont=Inconsolata\ for\ Powerline.otf\ 12
+" set laststatus=2
 
 Plugin 'tpope/vim-fugitive'
 
