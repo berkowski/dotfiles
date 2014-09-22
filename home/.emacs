@@ -2,6 +2,7 @@
 ;; http://juanjoalvarez.net/en/detail/2014/sep/19/vim-emacsevil-chaotic-migration-guide/
 
 ;; packages
+(require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
                         ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -38,6 +39,7 @@
 ;; Evil config
 (require-package 'evil)
 (require-package 'evil-surround)
+(setq evil-search-module 'evil-search)
 
 (evil-mode 1)
 
@@ -61,6 +63,18 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 (global-set-key [escape] 'evil-exit-emacs-state)
 
+; quick buffer cycling
+(define-key evil-normal-state-map (kbd "[ b") 'previous-buffer)
+(define-key evil-normal-state-map (kbd "] b") 'next-buffer)
+
+; quick syntax error jumping
+(define-key evil-normal-state-map (kbd "[ q") 'previous-error)
+(define-key evil-normal-state-map (kbd "] q") 'next-error)
+
+;; Use evil-surround
+(require-package 'evil-surround)
+(global-evil-surround-mode 1)
+
 ;; Projectile config
 (require-package 'projectile)
 (projectile-global-mode)
@@ -68,6 +82,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ;; Helm config
 ;; helm settings (TAB in helm window for actions over selected items,
 ;; C-SPC to select items)
+(require-package 'helm)
+(require-package 'helm-projectile)
 (require 'helm-config)
 (require 'helm-misc)
 (require 'helm-projectile)
@@ -93,6 +109,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 ;; Powerline
 (require-package 'powerline)
+(require-package 'powerline-evil)
 (powerline-evil-vim-color-theme)
 (display-time-mode t)
 
@@ -112,3 +129,28 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ;;   (eval-after-load 'flycheck
 ;;     '(custom-set-variables
 ;;       '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+
+;; Jedi auto-complete
+(require-package 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+(require-package 'diminish)
+(diminish 'visual-line-mode)
+;(after 'autopair (diminish 'autopair-mode))
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+;(after 'auto-complete (diminish 'auto-complete-mode))
+(eval-after-load "projectile" '(diminish 'projectile-mode))
+;(eval-after-load 'yasnippet (diminish 'yas-minor-mode))
+;(eval-after-load 'guide-key (diminish 'guide-key-mode))
+;(eval-after-load 'eldoc (diminish 'eldoc-mode))
+;(eval-after-load 'smartparens (diminish 'smartparens-mode))
+;(eval-after-load 'company (diminish 'company-mode))
+;(eval-after-load 'elisp-slime-nav (diminish 'elisp-slime-nav-mode))
+;(eval-after-load 'git-gutter+ (diminish 'git-gutter+-mode))
+;(eval-after-load 'magit (diminish 'magit-auto-revert-mode))
+;(eval-after-load 'hs-minor-mode (diminish 'hs-minor-mode))
+(eval-after-load "color-identifiers-mode" '(diminish 'color-identifiers-mode))
+;
+
+(provide 'emacs)
