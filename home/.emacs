@@ -24,6 +24,16 @@
 ; Show matching parens
 (show-paren-mode 1)
 
+; indent after newlines
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
+; highlight changes mode
+(global-highlight-changes-mode 1)
+
+;; Trim whitespace
+(require-package 'ws-butler)
+(ws-butler-global-mode 1)
+
 ;; Theme config
 (load-theme 'wombat)
 (require-package 'color-theme-approximate)
