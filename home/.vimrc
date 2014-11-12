@@ -42,7 +42,8 @@ Plugin 'godlygeek/tabular'
 
 Plugin 'klen/python-mode'
 
-Plugin 'davidhalter/jedi-vim'
+Plugin 'kien/ctrlp.vim'
+" Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tomasr/molokai'
 
