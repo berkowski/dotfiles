@@ -25,6 +25,9 @@
 ; Show matching parens
 (show-paren-mode 1)
 
+; Save backup files in their own directory
+(setq backup-directory-alist '(("." . "~/.emacs_saves")))
+
 ; indent after newlines
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
@@ -135,7 +138,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (require-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(setq flycheck-check-syntax-automatically '(save mode-enabled))
+; (Setq flycheck-check-syntax-automatically '(save mode-enabled))
 ; (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
 ; (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
 (setq flycheck-standard-error-navigation nil)
@@ -151,6 +154,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ;; Jedi auto-complete
 (require-package 'jedi)
 (add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook '(lambda () (setq fill-column 79)))
+
 (setq jedi:complete-on-dot t)
 
 (custom-set-variables
@@ -178,6 +183,13 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (require-package 'irony)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
+
+(defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+		    'irony-completion-at-point-async)
+      (define-key irony-mode-map [remap complete-symbol]
+		      'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
 
 ; google c/c++ styles
 (require-package 'flycheck-google-cpplint)
