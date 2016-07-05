@@ -117,7 +117,26 @@ source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 alias tmux="tmux -2"
 
-source "$HOME/repos/sentry/dslmeta/etc/environment"
+source "$HOME/code/dslmeta/etc/environment"
 
-export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/opt/google-lcm/lib/pkgconfig
-export PATH=/opt/google-lcm/bin:${PATH}
+export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/opt/lcm-1.3.0/lib/pkgconfig
+export PATH=/opt/lcm-1.3.0/bin:${PATH}
+
+# golang
+export GOROOT=/opt/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+# export PATH=/opt/gmt-5.1.1/bin:$PATH
+export PATH=/opt/redis/bin:$PATH
+#export PATH=/opt/mbsystem-5.5.2233/bin:$PATH
+#export PATH=/opt/microchip/mplabx/v3.00.02-beta/mplab_ide/bin:$PATH
+#export PATH=/opt/microchip/mplabx/v3.00.02-beta/mplab_ipe:$PATH
+
+alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+complete -F _quilt_completion $_quilt_complete_opt dquilt
+
+export DEBMAIL="zberkowitz@whoi.edu"
+export DEBFULLNAME="Zac Berkowitz"
+
+export PATH="$HOME/.cargo/bin:$PATH"
