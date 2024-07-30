@@ -1,0 +1,265 @@
+--- subs.f90.orig	2024-04-23 14:02:58.435241448 +0000
++++ subs.f90	2024-04-23 14:19:27.035101158 +0000
+@@ -29,7 +29,7 @@
+       character*3 varname(2)
+       character*6 type
+       character*1 zuv
+-      character*80 fname
++      character*255 fname
+       character*4 con
+       integer ncid,i0,j0,n,m,ic,ncmod,status,varid,k
+       integer start(3), count(3), stride(3)
+@@ -113,20 +113,20 @@
+                         APRI,Geo,outname,interp)
+       implicit none
+       include 'constit.h'
+-      character*80 modname,lltname,outname,tmp,rmCom
++      character*255 modname,lltname,outname,tmp,rmCom
+       character*1 zuv
+       logical APRI,Geo,interp 
+       character*4 c_id(ncmx),con
+       integer k,ic,ncon
+ !
+       interp=.false.
+-      read(*,'(a80)',err=1)modname
++      read(*,'(a255)',err=1)modname
+       modname=rmCom(modname)
+       if(trim(modname).eq.'')modname='model.list'
+-      read(*,'(a80)',err=1)lltname
++      read(*,'(a255)',err=1)lltname
+       lltname=rmCom(lltname)
+       read(*,'(a1)',err=1)zuv
+-      read(*,'(a80)',err=1)tmp
++      read(*,'(a255)',err=1)tmp
+       tmp=rmCom(tmp)
+       ic=0
+       k=1
+@@ -135,21 +135,21 @@
+        k=index(tmp,',')
+        ic=ic+1
+        c_id(ic)=tmp(1:max(1,k-1))
+-       tmp=tmp(k+1:80)
++       tmp=tmp(k+1:255)
+       enddo
+       if(trim(tmp).ne.'')ncon=ic
+-      c_id(ic)=tmp(1:80)
+-      read(*,'(a80)')tmp
++      c_id(ic)=tmp(1:255)
++      read(*,'(a255)')tmp
+       tmp=rmCom(tmp)
+       APRI=.false.
+       if(trim(tmp).eq.'AP')APRI=.true.
+       geo=.false.
+-      read(*,'(a80)',err=1)tmp ! geo/oce
++      read(*,'(a255)',err=1)tmp ! geo/oce
+       tmp=rmCom(tmp)
+       if(tmp(1:3).eq.'geo')geo=.true.
+       read(*,*,err=1)k
+       if(k.eq.1)interp=.true.
+-      read(*,'(a80)',err=1)outname
++      read(*,'(a255)',err=1)outname
+       outname=rmCom(outname)
+       return
+ 1     write(*,*)'Input file of WRONG FORMAT: see setup.inp'
+@@ -173,9 +173,9 @@
+       include 'constit.h'
+       real*4 th_lim(2),ph_lim(2)
+       character*4 c_id(ncmx),ctmp
+-      character*80 modname
+-      character*80 hname,uname,gname,fname,rmCom,tname
+-      character*80 xy_ll_sub
++      character*255 modname
++      character*255 hname,uname,gname,fname,rmCom,tname
++      character*255 xy_ll_sub
+       character*1 zuv
+       integer*4 k,nc,n,m,ncid,ic,icc,nca,len,varid,dimid,status
+       character*3 dname(4)
+@@ -236,7 +236,7 @@
+       include 'constit.h' 
+       real th_lim(2),ph_lim(2)
+       character*4 c_id(ncmx)
+-      character*80 fname,ctmp
++      character*255 fname,ctmp
+       integer nc,n,m,ncid,k,status,dimid,varid,len
+       character*3 dname(4)
+       data dname/'nx ','ny ','nc ','nct'/ 
+@@ -267,9 +267,9 @@
+       stop
+       end
+ !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+-      character*80 function rmCom(str) ! removes everything after '!' 
++      character*255 function rmCom(str) ! removes everything after '!' 
+                                        ! in a string 
+-      character*80 str
++      character*255 str
+       integer k 
+       k=index(str,'!')
+       rmCom=str
+@@ -1319,7 +1319,7 @@
+       include 'netcdf.inc'
+       include 'constit.h'
+       character*4 c_id(ncmx),ctmp
+-      character*80 fname,tname
++      character*255 fname,tname
+       integer*4 k,nc,ncid,ic,icc,status 
+ !
+       icc=1   
+@@ -1327,7 +1327,7 @@
+       k=index(fname,'*')
+       if(k.ne.0)then ! atlas files->try all constituents
+         do ic=1,ncmx
+-         tname=fname(1:k-1)//trim(constid(ic))//fname(k+1:80)
++         tname=fname(1:k-1)//trim(constid(ic))//fname(k+1:255)
+          status=nf_open(trim(tname),nf_nowrite,ncid)
+          if(status.ne.0)go to 3
+          status=nf_close(ncid)
+@@ -1335,7 +1335,7 @@
+          icc=icc+1        
+ 3        continue
+         enddo
+-        fname=fname(1:k-1)//trim(c_id(1))//fname(k+1:80)
++        fname=fname(1:k-1)//trim(c_id(1))//fname(k+1:255)
+       endif
+       nc=icc-1
+       return
+@@ -1345,7 +1345,7 @@
+         implicit none
+         include 'constit.h'
+         integer iunit,k,n,m,nc
+-        character(len=80)fname
++        character(len=255)fname
+         character*4 cid(ncmx)
+         real*4 th_lim(2),ph_lim(2)
+         complex z(nc,n,m)
+@@ -1365,7 +1365,7 @@
+         implicit none
+         include 'constit.h'
+         integer iunit,k,n,m,nc
+-        character(len=80)fname
++        character(len=255)fname
+         complex u(nc,n,m),v(nc,n,m)
+         complex,allocatable:: uv(:,:,:)
+         character*4 cid(ncmx)
+@@ -1587,12 +1587,12 @@
+       xy_ll_sub=' '
+       funit=111
+       open(unit=funit,file=modname,status='old',err=1)
+-      read(funit,'(a80)',err=1)hname ! ALWAYS there
++      read(funit,'(a255)',err=1)hname ! ALWAYS there
+       hname=rmCom(hname)
+-      read(funit,'(a80)',end=5)uname
++      read(funit,'(a255)',end=5)uname
+       uname=rmCom(uname)
+-      read(funit,'(a80)',end=5)gname
+-      read(funit,'(a80)',end=5)fname
++      read(funit,'(a255)',end=5)gname
++      read(funit,'(a255)',end=5)fname
+       xy_ll_sub=rmCom(fname)
+ 5     close(funit)
+       call fname_atlas(uname,funit,c_id,ncatlas)
+@@ -1607,7 +1607,7 @@
+       implicit none
+       include 'netcdf.inc'
+       character*5 varname
+-      character*80 gname
++      character*255 gname
+       integer*4 ncid,status,varid,nx,ny,k,len,dimid
+       real hz(nx,ny)
+       integer mz(nx,ny)
+@@ -1663,7 +1663,7 @@
+       include 'netcdf.inc'
+       real th_lim(2),ph_lim(2),stx,sty
+       real*8, allocatable:: x(:,:),y(:,:)
+-      character*80 gname,xy_ll_sub
++      character*255 gname,xy_ll_sub
+       integer n,m,ncid,varid,status,nca
+ !
+       allocate(x(n,m),y(n,m))
+--- predict_tide.f90.orig	2024-04-23 14:19:45.535098567 +0000
++++ predict_tide.f90	2024-04-23 14:20:30.435091842 +0000
+@@ -44,12 +44,12 @@
+       integer, allocatable:: cind(:),lcind(:),ccind(:),mz(:,:)
+ !
+       character*4 c_id(ncmx),c_id_mod(ncmx),lc_id(ncmx),tcon(ncmx)
+-      character*80 modname,lltname,outname,ctmp,lname
+-      character*80 hname,uname,gname,fname
++      character*255 modname,lltname,outname,ctmp,lname
++      character*255 hname,uname,gname,fname
+       character*2000 fmt
+-      character*80 rmCom,tfname
++      character*255 rmCom,tfname
+       character*1 zuv,c1,c2
+-      character*80 xy_ll_sub,arg
++      character*255 xy_ll_sub,arg
+       character*10 cdate
+       character*8 ctime
+       character*10 deblank 
+@@ -66,7 +66,7 @@
+       narg=iargc()
+       if(narg.gt.0)then
+         call getarg(1,arg)
+-        read(arg(3:80),'(a80)')tfname
++        read(arg(3:255),'(a255)')tfname
+         ntime=0
+         open(unit=1,file=tfname,status='old',err=16)
+ 18      read(1,*,end=17)idum,idum,idum,idum,idum,idum
+@@ -114,9 +114,9 @@
+ 
+       call rd_mod_header_nc(modname,zuv,n,m,th_lim,ph_lim,nc,c_id_mod,&
+                           xy_ll_sub)
+-      write(*,*)'Model:        ',trim(modname(12:80))
++      write(*,*)'Model:        ',trim(modname(12:255))
+       write(11,'(60a1)')('-',i=1,60)
+-      write(11,*)'Model:        ',trim(modname(12:80))
++      write(11,*)'Model:        ',trim(modname(12:255))
+       if(trim(xy_ll_sub).eq.'')then
+        write(*,*)'Lat limits:   ',th_lim
+        write(*,*)'Lon limits:   ',ph_lim
+@@ -301,7 +301,7 @@
+         if(ic.gt.1)then
+           k=index(fname,trim(c_id(ic-1)))
+           l=len(trim(c_id(ic-1)))
+-          fname=fname(1:k-1)//trim(c_id(ic))//fname(k+l:80)
++          fname=fname(1:k-1)//trim(c_id(ic))//fname(k+l:255)
+         endif
+         write(*,'(a,$)')c_id(ic)
+         status=nf_open(trim(fname),nf_nowrite,ncid(ic))
+--- extract_HC.f90.orig	2024-04-23 14:19:51.115097818 +0000
++++ extract_HC.f90	2024-04-23 14:20:56.865085372 +0000
+@@ -36,12 +36,12 @@
+       integer, allocatable:: cind(:),lcind(:),mz(:,:)
+ !
+       character*4 c_id(ncmx),c_id_mod(ncmx),lc_id(ncmx)
+-      character*80 modname,lltname,outname,gname,ctmp,lname
+-      character*80 hname,uname,fname
++      character*255 modname,lltname,outname,gname,ctmp,lname
++      character*255 hname,uname,fname
+       character*2000 fmt
+-      character*80 rmCom
++      character*255 rmCom
+       character*1 zuv,c1
+-      character*80 xy_ll_sub
++      character*255 xy_ll_sub
+       logical APRI,geo,interp_micon,ll_km
+       integer ncon,nc,n,m,ndat,k,ierr,ierr1,ic,n0,m0
+       integer ncl,nl,ml,ibl,nca,l
+@@ -67,8 +67,8 @@
+       write(*,*)
+       call rd_mod_header_nc(modname,zuv,n,m,th_lim,ph_lim,nc,c_id_mod,&
+                             xy_ll_sub)
+-      write(*,*)'Model:        ',trim(modname(12:80))
+-      write(11,*)'Model:        ',trim(modname(12:80))
++      write(*,*)'Model:        ',trim(modname(12:255))
++      write(11,*)'Model:        ',trim(modname(12:255))
+       if(trim(xy_ll_sub).eq.'')then
+        write(*,*)'Lat limits:   ',th_lim
+        write(*,*)'Lon limits:   ',ph_lim
+@@ -238,7 +238,7 @@
+         if(ic.gt.1)then
+           k=index(fname,trim(c_id(ic-1)))
+           l=len(trim(c_id(ic-1)))
+-          fname=fname(1:k-1)//trim(c_id(ic))//fname(k+l:80)
++          fname=fname(1:k-1)//trim(c_id(ic))//fname(k+l:255)
+         endif
+         write(*,'(a,$)')c_id(ic)
+         status=nf_open(trim(fname),nf_nowrite,ncid(ic))
