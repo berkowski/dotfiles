@@ -17,11 +17,11 @@
                          (device (uuid "80F9-1DF2"
                                        'fat16))
                          (type "vfat"))
-                       (file-system
-                         (mount-point "/")
-                         (device (uuid
-                                  "b20fccfb-010d-4a57-8edd-994724b4ad0c"
-                                  'ext4))
-                         (type "ext4")) %base-file-systems)))
+                      (file-system
+                        (mount-point "/")
+                        (device (uuid
+                                 "b20fccfb-010d-4a57-8edd-994724b4ad0c"
+                                 'ext4))
+                        (type "ext4")) %base-file-systems)))
 
 
