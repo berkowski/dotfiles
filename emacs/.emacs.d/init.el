@@ -198,6 +198,24 @@
   :ensure t
   :after (transient))
 
+(use-package corfu
+  :ensure t
+  :custom
+  ;; (corfu-auto t)
+  (corfu-quit-not-match 'separator)
+  :hook (prog-mode . corfu-mode))
+
+;; popon (for corfu-terminal
+(use-package popon
+  :ensure (:host codeberg :repo "akib/emacs-popon" :tag "v0.13"))
+
+(use-package corfu-terminal
+  :ensure (:host codeberg :repo "akib/emacs-corfu-terminal" :tag "v0.7")
+  :after (popon)
+  :config
+  (unless (display-graphic-p)
+    (corfu-terminal-mode +1)))
+
 ;; folding support using 'hideshow
 (use-package hideshow
   :ensure nil
@@ -207,6 +225,9 @@
 (use-package emacs
   :ensure nil
   :custom
+  ;; Enable indentation+completion using the TAB key.
+  (tab-always-indent 'complete)
+  
   (enable-recursive-minibuffers t)
   ;; Emacs 28 and newer: Hide commands in M-x which do not work in the current
   ;; mode.  Vertico commands are hidden in normal buffers. This setting is
@@ -229,6 +250,18 @@
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(eglot)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 ;; Local Variables:
 ;; no-byte-compile: t
 ;; no-native-compile: t
