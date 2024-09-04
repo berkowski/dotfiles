@@ -190,6 +190,14 @@
   ;; package.
   (marginalia-mode))
 
+;; magit requires transient version 0.7.5
+(use-package transient
+  :ensure t)
+
+(use-package magit
+  :ensure t
+  :after (transient))
+
 ;; folding support using 'hideshow
 (use-package hideshow
   :ensure nil
