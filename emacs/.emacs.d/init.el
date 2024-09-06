@@ -202,23 +202,23 @@
   :ensure t
   :after (transient))
 
-(use-package corfu
-  :ensure t
-  :custom
-  ;; (corfu-auto t)
-  (corfu-quit-not-match 'separator)
-  :hook (prog-mode . corfu-mode))
+;; (use-package corfu
+;;   :ensure t
+;;   :custom
+;;   ;; (corfu-auto t)
+;;   (corfu-quit-not-match 'separator)
+;;   :hook (prog-mode . corfu-mode))
 
 ;; popon (for corfu-terminal
 (use-package popon
   :ensure (:host codeberg :repo "akib/emacs-popon" :tag "v0.13"))
 
-(use-package corfu-terminal
-  :ensure (:host codeberg :repo "akib/emacs-corfu-terminal" :tag "v0.7")
-  :after (popon)
-  :config
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
+;; (use-package corfu-terminal
+;;   :ensure (:host codeberg :repo "akib/emacs-corfu-terminal" :tag "v0.7")
+;;   :after (popon)
+;;   :config
+;;   (unless (display-graphic-p)
+;;     (corfu-terminal-mode +1)))
 
 ;; folding support using 'hideshow
 (use-package hideshow
@@ -236,7 +236,7 @@
   ;; Emacs 28 and newer: Hide commands in M-x which do not work in the current
   ;; mode.  Vertico commands are hidden in normal buffers. This setting is
   ;; useful beyond Vertico.
-  (read-extended-command-predicate #'command-completion-default-include-p)
+  ;; (read-extended-command-predicate #'command-completion-default-include-p)
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
