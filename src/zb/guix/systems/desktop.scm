@@ -2,6 +2,7 @@
   #:use-module (zb guix systems base)
   #:use-module (zb guix substitutes)
   #:use-module (zb guix home services tmux)
+  #:use-module (zb guix home services shells)
   #:use-module (gnu services)
   #:use-module (gnu services desktop)
   #:use-module (gnu services guix)
@@ -14,6 +15,7 @@
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services sound)
   #:use-module (gnu packages emacs)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages tmux)
@@ -23,6 +25,7 @@
 
 (define %zb-desktop-home-services
   (list home-tmux-service-type
+	home-shell-service-type
 	(service home-dbus-service-type)
 	(service home-pipewire-service-type)))
 
@@ -33,11 +36,15 @@
   (service guix-home-service-type `(("zac" ,%zb-desktop-home-environment))))
 
 (define %zb-desktop-packages
-  (cons* git tmux
+  (cons* bluez git tmux
 	 (operating-system-packages zb-base-os)))
 
+(define %zb-bluetooth-service
+  (service bluetooth-service-type (bluetooth-configuration (auto-enable? #t))))
+
 (define %zb-desktop-services
-  (modify-services  (remove (lambda (service)
+  (modify-services  (cons* %zb-bluetooth-service
+			   (remove (lambda (service)
 			      (let* ((type (service-kind service))
 				     (name (service-type-name type)))
 				
@@ -50,7 +57,7 @@
 				    (memq name
 					  (list 'network-manager-applet
 						'screen-locker)))))
-			    %desktop-services)
+			    %desktop-services))
 		    (delete sound:alsa-service-type)
 		    (delete sound:pulseaudio-service-type)))
 
