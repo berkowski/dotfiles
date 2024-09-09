@@ -14,6 +14,7 @@
   #:use-module (gnu home)
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services sound)
+  #:use-module (gnu packages containers)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages version-control)
@@ -21,6 +22,7 @@
   #:use-module (gnu packages tmux)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
+  #:use-module (guix gexp)
   #:use-module (srfi srfi-1))
 
 (define %zb-desktop-home-services
@@ -36,14 +38,22 @@
   (service guix-home-service-type `(("zac" ,%zb-desktop-home-environment))))
 
 (define %zb-desktop-packages
-  (cons* bluez git tmux pipewire wireplumber
+  (cons* bluez git tmux pipewire wireplumber podman
 	 (operating-system-packages zb-base-os)))
 
 (define %zb-bluetooth-service
   (service bluetooth-service-type (bluetooth-configuration (auto-enable? #t))))
 
+(define %zb-podman-subuid-subgid-service
+  (simple-service 'zb-podman-subuid-subgid-service
+		  etc-service-type
+		  `(("subuid" ,(plain-file "subuid" (string-append "zac" ":100000:65536")))
+		    ("subgid" ,(plain-file "subgid" (string-append "zac" ":100000:65536"))))))
+
+
 (define %zb-desktop-services
   (modify-services  (cons* %zb-bluetooth-service
+			   %zb-podman-subuid-subgid-service
 			   (remove (lambda (service)
 			      (let* ((type (service-kind service))
 				     (name (service-type-name type)))
