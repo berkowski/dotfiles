@@ -36,7 +36,7 @@
   (service guix-home-service-type `(("zac" ,%zb-desktop-home-environment))))
 
 (define %zb-desktop-packages
-  (cons* bluez git tmux
+  (cons* bluez git tmux pipewire wireplumber
 	 (operating-system-packages zb-base-os)))
 
 (define %zb-bluetooth-service
