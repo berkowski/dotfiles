@@ -20,6 +20,7 @@
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages version-control)
+  #:use-module (gnu packages ssh)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages tmux)
   #:use-module (gnu packages wm)
@@ -40,7 +41,7 @@
   (service guix-home-service-type `(("zac" ,%zb-desktop-home-environment))))
 
 (define %zb-desktop-packages
-  (cons* bluez git tmux pipewire wireplumber podman
+  (cons* bluez git tmux pipewire wireplumber podman openssh
 	 (operating-system-packages zb-base-os)))
 
 (define %zb-bluetooth-service
