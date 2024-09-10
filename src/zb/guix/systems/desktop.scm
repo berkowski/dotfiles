@@ -1,8 +1,10 @@
 (define-module (zb guix systems desktop)
   #:use-module (zb guix systems base)
   #:use-module (zb guix substitutes)
+  #:use-module (zb guix home services foot)
   #:use-module (zb guix home services tmux)
   #:use-module (zb guix home services shells)
+  #:use-module (zb guix home services sway)
   #:use-module (gnu services)
   #:use-module (gnu services desktop)
   #:use-module (gnu services guix)
@@ -71,16 +73,18 @@
 		    (delete sound:alsa-service-type)
 		    (delete sound:pulseaudio-service-type)))
 
-(define %zb-sway-home-environment
-  (home-environment
-   (services %zb-desktop-home-services)))
-
-(define %zb-sway-home-service
-  (service guix-home-service-type `(("zac" ,%zb-sway-home-environment))))
-
 (define %zb-sway-packages
   (cons* sway emacs-next-pgtk foot swayidle swaylock wofi
 	 %zb-desktop-packages))
+
+(define %zb-sway-home-environment
+  (home-environment
+   (services (cons* home-sway-service-type
+	            home-foot-service-type
+		    %zb-desktop-home-services))))
+
+(define %zb-sway-home-service
+  (service guix-home-service-type `(("zac" ,%zb-sway-home-environment))))
 
 (define-public zb-sway-os
   (operating-system
