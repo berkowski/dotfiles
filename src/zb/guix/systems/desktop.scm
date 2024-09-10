@@ -84,6 +84,9 @@
 	            home-foot-service-type
 		    %zb-desktop-home-services))))
 
+(define-public sway-home-environment
+  %zb-sway-home-environment)
+
 (define %zb-sway-home-service
   (service guix-home-service-type `(("zac" ,%zb-sway-home-environment))))
 
