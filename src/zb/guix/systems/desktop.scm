@@ -90,9 +90,18 @@
 (define %zb-sway-home-service
   (service guix-home-service-type `(("zac" ,%zb-sway-home-environment))))
 
+(define %zb-sway-swaylock-service-type
+  (service screen-locker-service-type
+	   (screen-locker-configuration
+            (name "swaylock")
+            (program (file-append swaylock "/bin/swaylock"))
+            (using-pam? #t)
+            (using-setuid? #f))))
+
 (define-public zb-sway-os
   (operating-system
    (inherit zb-base-os)
    (services (modify-services (cons* %zb-sway-home-service
+				     %zb-sway-swaylock-service-type
 				     %zb-desktop-services)))
    (packages %zb-sway-packages)))
