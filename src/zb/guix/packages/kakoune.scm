@@ -1,4 +1,4 @@
-(define-module (zb packages kakoune)
+(define-module (zb guix packages kakoune)
   #:use-module (guix packages)
   #:use-module (gnu packages)
   #:use-module (gnu packages text-editors))

@@ -1,4 +1,4 @@
-(define-module (zb systems basic)
+(define-module (zb guix systems basic)
   #:use-module (gnu)
   #:use-module (gnu system setuid)
   #:use-module (gnu packages linux)

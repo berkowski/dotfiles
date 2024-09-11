@@ -1,4 +1,4 @@
-(define-module (zb packages ardupilot)
+(define-module (zb guix packages ardupilot)
     #:use-module (guix packages)
     #:use-module (guix download)
     #:use-module (guix git-download)
@@ -15,7 +15,7 @@
     #:use-module (gnu packages game-development)
     #:use-module (gnu packages wxwidgets)
     #:use-module (gnu packages xml)
-    #:use-module (zb packages mavlink))
+    #:use-module (zb guix packages mavlink))
 
 (define-public python-ratelim
   (package

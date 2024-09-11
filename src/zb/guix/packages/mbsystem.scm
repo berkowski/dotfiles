@@ -1,4 +1,4 @@
-(define-module (zb packages mbsystem)
+(define-module (zb guix packages mbsystem)
   #:use-module (guix download)
   #:use-module (guix packages)
   #:use-module (guix build-system cmake)
@@ -35,8 +35,8 @@
    (version "2021.10.29")
    (source (origin
             (method url-fetch)
-            (uri "file:///home/guest/mbsystem-guix/OTPSnc-with-tpxo9.tar.bz")
-	        (sha256 (base32 "194aaaz1j4afaf4nqpcg62zy6yp2q5rrm3r84zvps6ycrbmx2nnw"))))
+            (uri (string-append "file://" (dirname (current-filename)) "/OTPSnc-with-tpxo9.tar.bz"))
+	    (sha256 (base32 "194aaaz1j4afaf4nqpcg62zy6yp2q5rrm3r84zvps6ycrbmx2nnw"))))
    (build-system gnu-build-system)
    (arguments
     (list

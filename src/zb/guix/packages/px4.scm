@@ -1,4 +1,4 @@
-(define-module (zb packages px4)
+(define-module (zb guix packages px4)
     #:use-module (guix packages)
     #:use-module (guix download)
     #:use-module (guix git-download)

@@ -1,4 +1,4 @@
-(define-module (zb packages kicad)
+(define-module (zb guix packages kicad)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix build-system cmake)
   #:use-module (guix download)

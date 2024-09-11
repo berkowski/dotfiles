@@ -1,4 +1,4 @@
-(define-module (zb packages qgroundcontrol)
+(define-module (zb guix packages qgroundcontrol)
     #:use-module (guix packages)
     #:use-module (guix download)
     #:use-module (guix git-download)
@@ -11,7 +11,7 @@
     #:use-module (gnu packages pkg-config)
     #:use-module (gnu packages sdl)
     #:use-module (gnu packages compression)
-    #:use-module (zb packages mavlink))
+    #:use-module (zb guix packages mavlink))
 
 (define-public python-dronecan
   (package

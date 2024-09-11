@@ -1,4 +1,4 @@
-(define-module (zb packages mavlink)
+(define-module (zb guix packages mavlink)
     #:use-module (guix packages)
     #:use-module (guix download)
     #:use-module (guix git-download)
