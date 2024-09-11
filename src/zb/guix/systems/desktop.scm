@@ -75,7 +75,7 @@
 		    (delete sound:pulseaudio-service-type)))
 
 (define %zb-sway-packages
-  (cons* sway emacs-next-pgtk foot swayidle swaylock wofi
+  (cons* sway emacs-next-pgtk foot swayidle swaylock rofi
 	 %zb-desktop-packages))
 
 (define %zb-sway-home-environment
