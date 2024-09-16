@@ -35,25 +35,26 @@
               "0mhjp1azpxxkx4j94g9xblj9ihkvn7ivhbx3nss8mb4jbfh81rp7"))))
    (build-system meson-build-system)
    (arguments
-    '(#:phases (modify-phases %standard-phases
-			      (add-after 'install 'wrap-program
-					 (lambda* (#:key inputs outputs #:allow-other-keys)
-						  (let ((out (assoc-ref outputs "out"))
-							(hicolor-theme (assoc-ref inputs "hicolor-icon-theme"))
-							(adwaita-theme (assoc-ref inputs "adwaita-icon-theme"))
-							(shared-mime (assoc-ref inputs "shared-mime-info")))
-						    (wrap-program (string-append out "/bin/horizon-eda")
-								  `("XDG_DATA_DIRS" ":" prefix
-								    ,(map (lambda (package)
-									    (string-append package "/share"))
-									  `(,hicolor-theme
-									    ,adwaita-theme
-									    ,shared-mime)))
-								  `("GDK_PIXBUF_MODULE_FILE" =
-								    (,(getenv "GDK_PIXBUF_MODULE_FILE")))
-								  `("GSETTINGS_SCHEMA_DIR" =
-								    (,(string-append (assoc-ref inputs "gtk+")
-										     "/share/glib-2.0/schemas"))))))))))
+    '(#:glib-or-gtk? #t))
+      ;; #:phases (modify-phases %standard-phases
+      ;; 			      (add-after 'install 'wrap-program
+      ;; 					 (lambda* (#:key inputs outputs #:allow-other-keys)
+      ;; 						  (let ((out (assoc-ref outputs "out"))
+      ;; 							(hicolor-theme (assoc-ref inputs "hicolor-icon-theme"))
+      ;; 							(adwaita-theme (assoc-ref inputs "adwaita-icon-theme"))
+      ;; 							(shared-mime (assoc-ref inputs "shared-mime-info")))
+      ;; 						    (wrap-program (string-append out "/bin/horizon-eda")
+      ;; 								  `("XDG_DATA_DIRS" ":" prefix
+      ;; 								    ,(map (lambda (package)
+      ;; 									    (string-append package "/share"))
+      ;; 									  `(,hicolor-theme
+      ;; 									    ,adwaita-theme
+      ;; 									    ,shared-mime)))
+      ;; 								  `("GDK_PIXBUF_MODULE_FILE" =
+      ;; 								    (,(getenv "GDK_PIXBUF_MODULE_FILE")))
+      ;; 								  `("GSETTINGS_SCHEMA_DIR" =
+      ;; 								    (,(string-append (assoc-ref inputs "gtk+")
+      ;; 										     "/share/glib-2.0/schemas"))))))))))
    (native-inputs (list pkg-config
 			ruby
 			python
