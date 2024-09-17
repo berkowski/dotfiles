@@ -23,48 +23,63 @@
 
 (define-public horizon-eda
   (package
-   (name "horizon-eda")
-   (version "2.6.0")
-   (source (origin
-            (method url-fetch)
-            (uri (string-append "https://github.com/horizon-eda/horizon/archive/refs/tags/v"
-                                version
-                                ".tar.gz"))
-            (sha256
-             (base32
-              "0mhjp1azpxxkx4j94g9xblj9ihkvn7ivhbx3nss8mb4jbfh81rp7"))))
-   (build-system meson-build-system)
-   (arguments
-    '(#:glib-or-gtk? #t))
-   (native-inputs (list pkg-config
-                        ruby
-                        python
-                        python-wrapper
-                        cmake
-                        `(,glib "bin")
-                        git))
-   (inputs (list gtkmm-3
-                 (librsvg-for-system)
-                 gdk-pixbuf
-                 util-linux
-                 zeromq
-                 cppzmq
-                 glm
-                 libgit2
-                 curl
-                 opencascade-occt
-                 podofo
-                 libarchive
-                 libspnav
-                 sqlite
-                 hicolor-icon-theme
-                 adwaita-icon-theme
-                 shared-mime-info))
-   (home-page "https://horizon-eda.org/")
-   (synopsis "Horizon EDA is an Electronic Design Automation
+    (name "horizon-eda")
+    (version "2.6.0")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append "https://github.com/horizon-eda/horizon/archive/refs/tags/v"
+                                  version
+                                  ".tar.gz"))
+              (sha256
+               (base32
+                "0mhjp1azpxxkx4j94g9xblj9ihkvn7ivhbx3nss8mb4jbfh81rp7"))))
+    (build-system meson-build-system)
+    (arguments
+     '(#:glib-or-gtk? #t
+       #:phases (modify-phases %standard-phases
+                  (replace 'build
+                    (lambda* (#:key parallel-build? #:allow-other-keys)
+                      (invoke "ninja"
+                              "-j" (if parallel-build?
+                                       (number->string (parallel-job-count))
+                                       "1")
+                              "horizon-eda"
+                              "horizon-imp"
+                              "horizon-tests")))
+                  (replace 'check
+                    (lambda* (#:key tests? #:allow-other-keys)
+                      (if tests?
+                          (invoke "./horizon-tests" "-s")
+                          (format #t "test suite not run~%")))))))
+    (native-inputs (list pkg-config
+                         ruby
+                         python
+                         python-wrapper
+                         cmake
+                         `(,glib "bin")
+                         git))
+    (inputs (list gtkmm-3
+                  (librsvg-for-system)
+                  gdk-pixbuf
+                  util-linux
+                  zeromq
+                  cppzmq
+                  glm
+                  libgit2
+                  curl
+                  opencascade-occt
+                  podofo
+                  libarchive
+                  libspnav
+                  sqlite
+                  hicolor-icon-theme
+                  adwaita-icon-theme
+                  shared-mime-info))
+    (home-page "https://horizon-eda.org/")
+    (synopsis "Horizon EDA is an Electronic Design Automation
 package for printed circuit board design")
-   (description "Horizon EDA is an Electronic Design Automation package
+    (description "Horizon EDA is an Electronic Design Automation package
 supporting an integrated end-to-end workflow for printed circuit board
 design including parts management and schematic entry.")
-   (license license:cc-by-sa4.0)))
-            
+    (license license:cc-by-sa4.0)))
+
